@@ -33,7 +33,6 @@
 			  <a href="/logout" on:click={logout}>Logout</a>
 		  {:else}
 			  <a href="/login">Login</a>
-			  <a href="/signup">Signup</a>
 		  {/if}
 
 		</nav>

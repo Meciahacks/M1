@@ -1,8 +1,8 @@
 <script>	
-import {Html5Qrcode,Html5QrcodeScanner,Html5QrcodeScanType} from "html5-qrcode"
+import {Html5QrcodeScanner,Html5QrcodeScanType} from "html5-qrcode"
 	import { onMount } from "svelte";
 
-let html5QrcodeScanner
+let html5QrcodeScanner,decodedText
 let config = {
         fps: 10,
         qrbox: {width: 100, height: 100},
@@ -11,8 +11,10 @@ let config = {
     };
 
 
-	const onScanSuccess=(decodedText, decodedResult)=>{
-            console.log('****',decodedResult.toString(),'****',decodedText)
+	const onScanSuccess=(decodedText1, decodedResult)=>{
+            console.log('****',decodedResult.toString(),'****',decodedText1)
+
+            decodedText=decodedText1
             // const decryptedText=CryptoJS.AES.decrypt(decodedText,"ihavesecret").toString(CryptoJS.enc.Utf8)
             // text=decryptedText
             html5QrcodeScanner.clear()          
@@ -37,5 +39,6 @@ let config = {
 
 <div>
 	<h1 class='bg-slate-800 text-white p-2 text-xl uppercase font-bold'>QR Code Scanner</h1>
+    <p class="bg-orange-800 text-white text-xl font-bold">{JSON.stringify(decodedText)}</p>
 	<div id="reader" width="800"/>
 </div>

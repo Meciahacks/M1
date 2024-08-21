@@ -28,17 +28,17 @@
 	{/each}
 	<main class="md:w-11/12 mx-auto min-h-screen p-2">
 		{#if !isValid}
-			{#if $page.url.toString().includes('login')}
+			{#if $page?.route?.id?.toString()=='/' || $page.url.toString().includes('login')}
 				<slot />
 			{:else}
-				<p>Please Login</p>
+				<p class="text-2xl text-orange-700 text-center w-full">You are Not Authorized,Please Login to Proceed</p>
 			{/if}
 		{:else}
 			<slot/>			
 		{/if}
 	</main>
 	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		<p class="uppercase text-center">visit <a href="https://mecia.oodo">MECIA2.0 WEBSITE</a></p>
 	</footer>
 </div>
 <style>	

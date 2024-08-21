@@ -3,8 +3,67 @@
 
 	import {pb} from '../auth'
 	import { onMount } from "svelte";
-	// @ts-ignore
 	let domainList,deptList
+	let teamdetail={
+		team_name:'',
+		domain:'',
+		approach:'',
+		problem_statement:''
+	},
+	
+	teamMemberList=[
+		{  
+			name: "",
+			contact: "",
+			email: "",
+			team: "",
+			enrollment: "",
+			is_leader: true,
+			dept: "",
+			year: ""
+		},
+		{  
+			name: "",
+			contact: "",
+			email: "",
+			team: "",
+			enrollment: "",
+			is_leader: false,
+			dept: "",
+			year: ""
+		},
+		{  
+			name: "",
+			contact: "",
+			email: "",
+			team: "",
+			enrollment: "",
+			is_leader: false,
+			dept: "",
+			year: ""
+		},
+		{  
+			name: "",
+			contact: "",
+			email: "",
+			team: "",
+			enrollment: "",
+			is_leader: false,
+			dept: "",
+			year: ""
+		},
+		{  
+			name: "",
+			contact: "",
+			email: "",
+			team: "",
+			enrollment: "",
+			is_leader: false,
+			dept: "",
+			year: ""
+		}
+	]
+
 	const shuffleText=(label)=>{
 	if(!label)
 			return
@@ -64,7 +123,6 @@ const initField=()=>{
 	} );
 }
 
-
 const fetchDomainList=async()=>{
 	try {		
 		domainList=await pb.collection('domain').getFullList()		
@@ -86,29 +144,29 @@ onMount(()=>{
 	initField()
 })				
 </script>
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+<svelte:head>	
+<title>MECIA2.0 Registration</title>
+	<meta name="description" content="mecia registration" />
 </svelte:head>
-
-
 <section class="mx-auto w-10/12">	
 	<h2 id='text' class="font-bold uppercase justify-center flex text-xl md:text-4xl">MECIA2.0 Registration</h2>	
+	<p>{JSON.stringify(teamdetail)}</p><p>{JSON.stringify(teamMemberList)}</p>
 	<div >		
 		<span class="input1 input--juro">
-			<input class="input__field input__field--juro" type="text" id="teamname" />
+			<input bind:value={teamdetail.team_name} class="input__field input__field--juro" type="text" id="teamname" />
 			<label class="input__label input__label--juro" for="teamname">
 				<span class="input__label-content input__label-content--juro uppercase font-bold">team name</span>
 			</label>
 		</span>
 		<span class="input1 input--juro">
-			<input class="input__field input__field--juro" type="text" id="prob" />
+			<input bind:value={teamdetail.problem_statement} class="input__field input__field--juro" type="text" id="prob" />
 			<label class="input__label input__label--juro" for="prob">
+
 				<span class="input__label-content input__label-content--juro uppercase font-bold">Problem Defination</span>
 			</label>
 		</span>
 		<span class="input1 input--juro">
-			<select class="input__field input__field--juro"  id="approch">
+			<select bind:value={teamdetail.approach} class="input__field input__field--juro"  id="approch">
 				<option value="" disabled selected></option>
 				<option value="Hardware">HARDWARE</option>
 				<option value="Software">SOFTWARE</option>
@@ -118,9 +176,8 @@ onMount(()=>{
 				<span class="input__label-content input__label-content--juro uppercase font-bold">select approch</span>
 			</label>
 		</span>
-
-		<span class="input1 input--juro">
-			<select class="input__field input__field--juro uppercase text-left"  id="domain">
+		<span class="input1 input--juro">			
+			<select bind:value={teamdetail.domain} class="input__field input__field--juro uppercase text-left"  id="domain">
 				<option value="" disabled selected></option>
 				{#if domainList}
 					{#each domainList  as domain}					
@@ -133,47 +190,41 @@ onMount(()=>{
 			</label>
 		</span>
 	</div>
-
-
-
-
-
-
-
-
-
-
-
-	<div class="p-1 border">
-		<div class="grid grid-cols-2">
+	{#each teamMemberList as team_member,indx}
+		<div class="p-1 border">
+		<h4 class="bg-slate-700 text-white uppercase font-bold rounded p-2">{#if team_member.is_leader}Leader Detail{:else}Member-{indx} Detail{/if}</h4>
+		<div class="grid grid-cols-1 md:grid-cols-2">
 			<span class="input1 input--juro">
-				<input class="input__field input__field--juro" type="text" id="name" />
+				<input bind:value={team_member.name} class="input__field input__field--juro" type="text" id="name" />
 				<label class="input__label input__label--juro" for="name">
-					<span class="input__label-content input__label-content--juro uppercase font-bold">Full Name</span>
+					<span class="input__label-content input__label-content--juro uppercase font-bold">			
+						{#if team_member.is_leader}Leader Name{:else}Member Name{/if}
+					</span>
 				</label>
 			</span>
 			<span class="input1 input--juro">
-				<input class="input__field input__field--juro" type="text" id="enroll" />
+				<input bind:value={team_member.enrollment} class="input__field input__field--juro" type="text" id="enroll" />
 				<label class="input__label input__label--juro" for="enroll">
 					<span class="input__label-content input__label-content--juro uppercase font-bold">Enrollment/College ID</span>
 				</label>
 			</span>
-			</div>
-			<div class="grid grid-cols-4">
+
+		</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
 			<span class="input1 input--juro">
-				<input class="input__field input__field--juro" type="text" id="contact" />
+				<input bind:value={team_member.contact} class="input__field input__field--juro" type="text" id="contact" />
 				<label class="input__label input__label--juro" for="contact">
 					<span class="input__label-content input__label-content--juro uppercase font-bold">Contact Number(WhatsApp)</span>
 				</label>
 			</span>
 			<span class="input1 input--juro">
-				<input class="input__field input__field--juro" type="emain" id="email" />
+				<input bind:value={team_member.email} class="input__field input__field--juro" type="email" id="email" />
 				<label class="input__label input__label--juro" for="email">
 					<span class="input__label-content input__label-content--juro uppercase font-bold">Email</span>
 				</label>
 			</span>			
 			<span class="input1 input--juro">
-				<select class="input__field input__field--juro uppercase text-left"  id="dept">
+				<select bind:value={team_member.dept} class="input__field input__field--juro uppercase text-left"  id="dept">
 					<option value="" disabled selected></option>
 					{#if deptList}
 						{#each deptList  as dept}					
@@ -186,7 +237,7 @@ onMount(()=>{
 				</label>
 			</span>
 			<span class="input1 input--juro">
-				<select class="input__field input__field--juro uppercase text-left"  id="year">
+				<select bind:value={team_member.year} class="input__field input__field--juro uppercase text-left"  id="year">
 					<option value="" disabled selected></option>
 					<option value="First Year">First Year</option>				
 					<option value="Second Year">Second Year</option>
@@ -198,9 +249,10 @@ onMount(()=>{
 				</label>
 			</span>
 		</div>
-	</div>
+		</div>
+		
+	{/each}
 </section>
-
 <style>
 </style>
 

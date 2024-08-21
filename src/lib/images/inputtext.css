@@ -266,9 +266,6 @@
 .input__label--kuro::before {
 	border-right: none;
 }
-option{
-	background-color: #2f3238;color: #df6589;
-}
 .input__label--kuro::after {
 	left: 50%;
 	border-left: none;

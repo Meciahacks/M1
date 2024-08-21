@@ -3,17 +3,21 @@
 	
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	let email = '';
-	let password = '';
+	let email = '',password = ''
+	let loading=false
 	let error = '';
 	async function login() {
 	  try {		
+		loading=true
 		await pb.collection('users').authWithPassword(email, password);
-		goto('/entry');
 
+		goto('/entry');
 	} catch (err) {
 		console.log(err);
 		error = 'Invalid login credentials';
+	  }
+	  finally{
+		loading=false
 	  }
 	}
 	onMount(() => {
@@ -34,8 +38,6 @@
   {#if error}
 	<p style="color: red;">{error}</p>
   {/if}
-
-
   <form on:submit|preventDefault={login} class="container">
 	<label class="form-control w-full">
 		<div class="label">
@@ -49,9 +51,15 @@
 		</div>
 		<input type="password" placeholder="Password" class="input input-bordered w-full text-slate-800"  bind:value={password} required/>		
 	</label>
-	
 	<div class="w-full my-4">
-		<button type="submit" class="btn btn-neutral btn-wide w-full">Login</button>
+		<button type="submit" class="btn btn-neutral btn-wide w-full">			
+			{#if loading}<span class="loading loading-spinner">
+				Logging In, Please Wait....
+			</span>
+			{:else}
+				LOGIN
+			{/if}
+		</button>
 	</div>
   </form>
 </div>

@@ -5,15 +5,15 @@ import { onMount } from "svelte";
 import {pb} from '../../auth'
 let html5QrcodeScanner,decodedText
 let dt,loading=false
-let slotList,selectedSlot=''
+let slotList,selectedSlotText=''
+let mesg='',error_mesg=''
 let config = {
         fps: 10,
         qrbox: {width: 100, height: 100},
-        rememberLastUsedCamera: true,
 
+        rememberLastUsedCamera: true,
         supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
     };
-
     const fetchSlotList=async()=>{
         try{
             slotList=await pb.collection('slot').getFullList()
@@ -21,6 +21,8 @@ let config = {
         }
         catch(error){
             console.log('****',error);
+            mesg=''
+            error_mesg=error
         }
     }
     const fetchRecord=async(decodedText)=>{
@@ -34,7 +36,9 @@ let config = {
             dt=record
         } catch (error) {            
             console.log('****',error);
-            dt='User !Found'            
+            dt='User !Found'        
+            mesg=''    
+            error_mesg=error
         }
         finally{
             loading=false
@@ -44,25 +48,28 @@ let config = {
         try {            
             const rr = {
                 "member": decodedText,
-                "slot": selectedSlot,
+                "slot": selectedSlotText,
                 "is_present": true
             };
             const record = await pb.collection('Slotwise').create(rr);        
-            console.log(record);
-            selectedSlot=''
+            selectedSlotText=''
+            mesg='Successfully Scanned'
+            error_mesg=''
+            html5QrcodeScanner.clear()            
         } catch (error) {            
-            console.log('****',error)
-            
+            error_mesg=error
+            mesg=''
+            console.log('****',error)            
         }
     }
 
     const fetchQR=(event) => {
-                selectedSlot=event.target.value;
+                selectedSlotText=event.target.value;
                 html5QrcodeScanner = new Html5QrcodeScanner("reader", config,false);
                 html5QrcodeScanner.render(onScanSuccess, onScanFailure);                   
         }
 	const onScanSuccess=(decodedText1, decodedResult)=>{
-        if(!selectedSlot){
+        if(!selectedSlotText){
             alert('Please ,Select Slot to Proceed')
             return
         }
@@ -73,6 +80,8 @@ let config = {
     }
 	const onScanFailure=(error)=>{
         console.log('****',error)
+        mesg=''
+        error_mesg=error
     }
 	onMount(async()=>{
         fetchSlotList()        
@@ -82,10 +91,16 @@ let config = {
 </script>
 <div>
 	<h1 class='bg-slate-800 text-white p-2 text-xl uppercase font-bold'>QR Code Scanner</h1>
+    {#if mesg}
+        <p class="text-2xl bg-green-700 text-white font-bold">{mesg}</p>
+    {/if}
+    {#if error_mesg}
+        <p class="text-2xl bg-orange-700 text-white font-bold">{error_mesg}</p>
+    {/if}
     {#if slotList}
         <div class="w-full p-2">
             <label for="slot1" class="font-bold text-xl">Select Slot</label>
-            <select on:change={fetchQR} id="slot1" class="select w-full"> 
+            <select bind:value={selectedSlotText} on:change={fetchQR} id="slot1" class="select w-full"> 
                 <option value="" selected disabled></option>
                 {#each slotList as record}
                     <option value={record.id}>{record.name}</option>

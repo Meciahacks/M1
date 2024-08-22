@@ -47,21 +47,27 @@ let config = {
                 "slot": selectedSlot,
                 "is_present": true
             };
-            const record = await pb.collection('Slotwise').create(rr);                    
+            const record = await pb.collection('Slotwise').create(rr);        
+            console.log(record);
+            selectedSlot=''
         } catch (error) {            
             console.log('****',error)
             
         }
     }
+
+    const fetchQR=(event) => {
+                selectedSlot=event.target.value;
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", config,false);
+                html5QrcodeScanner.render(onScanSuccess, onScanFailure);                   
+        }
 	const onScanSuccess=(decodedText1, decodedResult)=>{
         if(!selectedSlot){
             alert('Please ,Select Slot to Proceed')
-            html5QrcodeScanner.clear()          
             return
         }
         decodedText=decodedText1
-        fetchRecord(decodedText)   
-
+        fetchRecord(decodedText)
         insertRecord(decodedText)
         html5QrcodeScanner.clear()          
     }
@@ -69,23 +75,17 @@ let config = {
         console.log('****',error)
     }
 	onMount(async()=>{
-        fetchSlotList()
-        html5QrcodeScanner = new Html5QrcodeScanner("reader", config,false);
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);        
+        fetchSlotList()        
+        // html5QrcodeScanner = new Html5QrcodeScanner("reader", config,false);
+        // html5QrcodeScanner.render(onScanSuccess, onScanFailure);        
 })
 </script>
 <div>
 	<h1 class='bg-slate-800 text-white p-2 text-xl uppercase font-bold'>QR Code Scanner</h1>
-
     {#if slotList}
         <div class="w-full p-2">
             <label for="slot1" class="font-bold text-xl">Select Slot</label>
-            <select on:change={(event) => {
-                selectedSlot=event.target.value;
-
-                console.log(selectedSlot);
-                
-            }} id="slot1" class="select w-full"> 
+            <select on:change={fetchQR} id="slot1" class="select w-full"> 
                 <option value="" selected disabled></option>
                 {#each slotList as record}
                     <option value={record.id}>{record.name}</option>
@@ -93,7 +93,7 @@ let config = {
             </select>
         </div>
     {/if}
-    <div id="reader" width="800"/>        
+    <div id="reader" width="1024"/>        
     <input class="input border" on:blur={(event)=>fetchRecord(event.target.value)} type="text">    
     {#if dt}
         <div class="md:w-10/12 w-full mx-auto bg-slate-700 text-white p-4">

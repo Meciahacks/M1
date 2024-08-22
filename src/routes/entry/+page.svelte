@@ -4,7 +4,7 @@ import {Html5QrcodeScanner,Html5QrcodeScanType} from "html5-qrcode"
 import { onMount } from "svelte";
 import {pb} from '../../auth'
 let html5QrcodeScanner,decodedText
-let dt
+let dt,loading=false
 let config = {
         fps: 10,
         qrbox: {width: 100, height: 100},
@@ -13,20 +13,21 @@ let config = {
 
         supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
     };
-
     const fetchRecord=async(decodedText)=>{
         console.log(decodedText);        
-
         try {            
+            loading=true
             const record = await pb.collection('team_member').getOne(decodedText, {
                     expand: 'team',
             });
             console.log(record)
             dt=record
-
         } catch (error) {            
             console.log('****',error);
             dt='User !Found'            
+        }
+        finally{
+            loading=false
         }
     }
 	const onScanSuccess=(decodedText1, decodedResult)=>{
@@ -47,8 +48,34 @@ let config = {
 </script>
 <div>
 	<h1 class='bg-slate-800 text-white p-2 text-xl uppercase font-bold'>QR Code Scanner</h1>
-
     <div class="bg-orange-800 text-white text-xl font-bold overflow-x-scroll">{JSON.stringify(dt)}</div>
-	<div id="reader" width="800"/>
-    <input on:blur={(event)=>fetchRecord(event.target.value)} type="text">
+	<div id="reader" width="800"/>        
+    <input class="input border" on:blur={(event)=>fetchRecord(event.target.value)} type="text">
+
+    {#if dt}
+        <div class="md:w-10/12 w-full mx-auto bg-slate-700 text-white p-4">
+            <div class="grid grid-cols-2">
+                <div>Team Name:</div>
+                <div>{dt?.expand?.team?.team_name}</div>
+            </div>            
+            <div class="grid grid-cols-2">
+                <div>Member Name:</div>
+                <div>{dt.name}</div>
+            </div>
+        </div>
+    {:else if loading}
+        <p class="text-center text-xl">Loading....</p>   
+    {/if}
 </div>
+
+
+
+
+
+
+
+
+
+
+
+

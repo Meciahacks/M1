@@ -109,9 +109,13 @@ $: teamMemberList = Array.from({
 			
 const onsubmit=async()=>{	
 	try{
-		const record = await pb.collection('team_member').create(teamdetail);
+		const record = await pb.collection('team_details').create(teamdetail);
 
 		console.log('****',record)
+		for await (const dt of teamMemberList) {
+			dt.team=record.id
+			await pb.collection('team_member').create(dt)
+		}
 	}
 	catch(error){
 		console.log('****',error)

@@ -26,17 +26,28 @@ let config = {
         }
     }
     const fetchRecord=async(decodedText)=>{
-        console.log(decodedText);        
         try {            
             loading=true
+
+
+
+
+
+
+
+
+            
             const record = await pb.collection('team_member').getOne(decodedText, {
-                    expand: 'team',
+                    expand: 'team,Slotwise_via_member',
             });
+            
+            if(record.expand.Slotwise_via_member && record.expand.Slotwise_via_member[0].is_present){
+                mesg=''
+                error_mesg="Already Present"
+                return
+            }
             console.log(record)
             dt=record
-
-
-
             insertRecord(dt.id)
         } catch (error) {            
             console.log('****',error);
@@ -96,10 +107,10 @@ let config = {
 <div>
 	<h1 class='bg-slate-800 text-white p-2 text-xl uppercase font-bold'>QR Code Scanner</h1>
     {#if mesg}
-        <p class="text-2xl bg-green-700 text-white font-bold">{mesg}</p>
+        <p class="text-2xl bg-green-700 text-white font-bold text-center p-2">{mesg}</p>
     {/if}
     {#if error_mesg}
-        <p class="text-2xl bg-orange-700 text-white font-bold">{error_mesg}</p>
+        <p class="text-2xl bg-orange-700 text-white font-bold text-center p-2">{error_mesg}</p>
     {/if}
     {#if slotList}
         <div class="w-full p-2">

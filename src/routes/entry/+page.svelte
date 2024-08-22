@@ -40,6 +40,19 @@ let config = {
             loading=false
         }
     }
+    const insertRecord=async(decodedText)=>{
+        try {            
+            const rr = {
+                "member": decodedText,
+                "slot": selectedSlot,
+                "is_present": true
+            };
+            const record = await pb.collection('Slotwise').create(rr);                    
+        } catch (error) {            
+            console.log('****',error)
+            
+        }
+    }
 	const onScanSuccess=(decodedText1, decodedResult)=>{
         if(!selectedSlot){
             alert('Please ,Select Slot to Proceed')
@@ -47,14 +60,9 @@ let config = {
             return
         }
         decodedText=decodedText1
-        fetchRecord(decodedText)
-        const rr = {
-            "member": decodedText1,
-            "slot": selectedSlot,
-            "is_present": true
-        };
-        const record = await pb.collection('Slotwise').create(rr);        
-        console.log(record)        
+        fetchRecord(decodedText)   
+
+        insertRecord(decodedText)
         html5QrcodeScanner.clear()          
     }
 	const onScanFailure=(error)=>{

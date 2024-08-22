@@ -34,6 +34,10 @@ let config = {
             });
             console.log(record)
             dt=record
+
+
+
+            insertRecord(dt.id)
         } catch (error) {            
             console.log('****',error);
             dt='User !Found'        
@@ -51,6 +55,7 @@ let config = {
                 "slot": selectedSlotText,
                 "is_present": true
             };
+            console.log(rr)            
             const record = await pb.collection('Slotwise').create(rr);        
             selectedSlotText=''
             mesg='Successfully Scanned'
@@ -62,7 +67,6 @@ let config = {
             console.log('****',error)            
         }
     }
-
     const fetchQR=(event) => {
                 selectedSlotText=event.target.value;
                 html5QrcodeScanner = new Html5QrcodeScanner("reader", config,false);
@@ -110,6 +114,7 @@ let config = {
     {/if}
     <div id="reader" width="1024"/>        
     <input class="input border" on:blur={(event)=>fetchRecord(event.target.value)} type="text">    
+
     {#if dt}
         <div class="md:w-10/12 w-full mx-auto bg-slate-700 text-white p-4">
             <div class="grid grid-cols-2">

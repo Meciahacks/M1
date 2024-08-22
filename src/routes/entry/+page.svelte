@@ -5,14 +5,24 @@ import { onMount } from "svelte";
 import {pb} from '../../auth'
 let html5QrcodeScanner,decodedText
 let dt,loading=false
+let slotList,selectedSlot=''
 let config = {
         fps: 10,
         qrbox: {width: 100, height: 100},
         rememberLastUsedCamera: true,
 
-
         supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
     };
+
+    const fetchSlotList=async()=>{
+        try{
+            slotList=await pb.collection('slot').getFullList()
+            console.log(slotList)            
+        }
+        catch(error){
+            console.log('****',error);
+        }
+    }
     const fetchRecord=async(decodedText)=>{
         console.log(decodedText);        
         try {            
@@ -31,27 +41,52 @@ let config = {
         }
     }
 	const onScanSuccess=(decodedText1, decodedResult)=>{
-            console.log('****',decodedResult.toString(),'****',decodedText1)
-            decodedText=decodedText1
-            fetchRecord(decodedText)
-            // const decryptedText=CryptoJS.AES.decrypt(decodedText,"ihavesecret").toString(CryptoJS.enc.Utf8)
-            // text=decryptedText
+        if(!selectedSlot){
+            alert('Please ,Select Slot to Proceed')
             html5QrcodeScanner.clear()          
+            return
+        }
+        decodedText=decodedText1
+        fetchRecord(decodedText)
+        const rr = {
+            "member": decodedText1,
+            "slot": selectedSlot,
+            "is_present": true
+        };
+        const record = await pb.collection('Slotwise').create(rr);        
+        console.log(record)        
+        html5QrcodeScanner.clear()          
     }
 	const onScanFailure=(error)=>{
         console.log('****',error)
     }
 	onMount(async()=>{
+        fetchSlotList()
         html5QrcodeScanner = new Html5QrcodeScanner("reader", config,false);
         html5QrcodeScanner.render(onScanSuccess, onScanFailure);        
 })
 </script>
 <div>
 	<h1 class='bg-slate-800 text-white p-2 text-xl uppercase font-bold'>QR Code Scanner</h1>
-    <div class="bg-orange-800 text-white text-xl font-bold overflow-x-scroll">{JSON.stringify(dt)}</div>
-	<div id="reader" width="800"/>        
-    <input class="input border" on:blur={(event)=>fetchRecord(event.target.value)} type="text">
 
+    {#if slotList}
+        <div class="w-full p-2">
+            <label for="slot1" class="font-bold text-xl">Select Slot</label>
+            <select on:change={(event) => {
+                selectedSlot=event.target.value;
+
+                console.log(selectedSlot);
+                
+            }} id="slot1" class="select w-full"> 
+                <option value="" selected disabled></option>
+                {#each slotList as record}
+                    <option value={record.id}>{record.name}</option>
+                {/each}
+            </select>
+        </div>
+    {/if}
+    <div id="reader" width="800"/>        
+    <input class="input border" on:blur={(event)=>fetchRecord(event.target.value)} type="text">    
     {#if dt}
         <div class="md:w-10/12 w-full mx-auto bg-slate-700 text-white p-4">
             <div class="grid grid-cols-2">

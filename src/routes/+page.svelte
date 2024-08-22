@@ -4,65 +4,16 @@
 	import {pb} from '../auth'
 	import { onMount } from "svelte";
 	let domainList,deptList
+	let numberOFMember=2+1
 	let teamdetail={
 		team_name:'',
 		domain:'',
+		nb:'',
 		approach:'',
+
 		problem_statement:''
-	},
-	
-	teamMemberList=[
-		{  
-			name: "",
-			contact: "",
-			email: "",
-			team: "",
-			enrollment: "",
-			is_leader: true,
-			dept: "",
-			year: ""
-		},
-		{  
-			name: "",
-			contact: "",
-			email: "",
-			team: "",
-			enrollment: "",
-			is_leader: false,
-			dept: "",
-			year: ""
-		},
-		{  
-			name: "",
-			contact: "",
-			email: "",
-			team: "",
-			enrollment: "",
-			is_leader: false,
-			dept: "",
-			year: ""
-		},
-		{  
-			name: "",
-			contact: "",
-			email: "",
-			team: "",
-			enrollment: "",
-			is_leader: false,
-			dept: "",
-			year: ""
-		},
-		{  
-			name: "",
-			contact: "",
-			email: "",
-			team: "",
-			enrollment: "",
-			is_leader: false,
-			dept: "",
-			year: ""
-		}
-	]
+	},	
+	teamMemberList=[]
 
 	const shuffleText=(label)=>{
 	if(!label)
@@ -142,7 +93,30 @@ onMount(()=>{
 	fetchDomainList()
 	shuffleText(document.getElementById('text'))
 	initField()
-})				
+})		
+$: teamMemberList = Array.from({ 
+		length: numberOFMember}, 
+			(_,i) => ({				
+				name: "",
+				contact: "",
+				email: "",
+				team: "",
+				enrollment: "",
+				is_leader: i==0,
+				dept: "",
+				year: ""
+			}));	
+			
+const onsubmit=async()=>{	
+	try{
+		const record = await pb.collection('team_member').create(teamdetail);
+
+		console.log('****',record)
+	}
+	catch(error){
+		console.log('****',error)
+	}
+}
 </script>
 <svelte:head>	
 <title>MECIA2.0 Registration</title>
@@ -151,6 +125,7 @@ onMount(()=>{
 <section class="mx-auto w-10/12">	
 	<h2 id='text' class="font-bold uppercase justify-center flex text-xl md:text-4xl">MECIA2.0 Registration</h2>	
 	<p>{JSON.stringify(teamdetail)}</p><p>{JSON.stringify(teamMemberList)}</p>
+	<form on:submit={onsubmit}>
 	<div >		
 		<span class="input1 input--juro">
 			<input bind:value={teamdetail.team_name} class="input__field input__field--juro" type="text" id="teamname" />
@@ -161,7 +136,6 @@ onMount(()=>{
 		<span class="input1 input--juro">
 			<input bind:value={teamdetail.problem_statement} class="input__field input__field--juro" type="text" id="prob" />
 			<label class="input__label input__label--juro" for="prob">
-
 				<span class="input__label-content input__label-content--juro uppercase font-bold">Problem Defination</span>
 			</label>
 		</span>
@@ -187,6 +161,18 @@ onMount(()=>{
 			</select>
 			<label class="input__label input__label--juro" for="domain">
 				<span class="input__label-content input__label-content--juro uppercase font-bold">select domain</span>
+			</label>
+		</span>
+	</div>
+	<div>
+		<span class="input1 input--juro">
+			<select bind:value={numberOFMember} class="input__field input__field--juro"  id="nb">
+				<option value="" disabled selected></option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+			</select>
+			<label class="input__label input__label--juro" for="nb">
+				<span class="input__label-content input__label-content--juro uppercase font-bold">Number of Member</span>
 			</label>
 		</span>
 	</div>
@@ -249,9 +235,12 @@ onMount(()=>{
 				</label>
 			</span>
 		</div>
-		</div>
-		
+		</div>		
 	{/each}
+	<div class="flex justify-end p-2 w-full">
+		<button class="uppercase btn md:w-48 w-full btn-neutral" type="submit">submit</button>
+	</div>
+	</form>
 </section>
 <style>
 </style>

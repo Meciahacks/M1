@@ -110,7 +110,8 @@ onMount(()=>{
 $: if(numberOFMember){
 	teamMemberList = Array.from({ 
 		length: numberOFMember}, 
-			(_,i) => ({				
+		
+		(_,i) => ({				
 				name: "",
 				contact: "",
 				email: "",
@@ -120,7 +121,7 @@ $: if(numberOFMember){
 				dept: "",
 				year: ""
 	}));
-	}
+}
 const onsubmit=async()=>{	
 	try{
 		loading=true
@@ -154,6 +155,33 @@ const onsubmit=async()=>{
 		loading=false
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+const testEntry=async()=>{
+	try{
+		loading=true
+		const record1= await pb.collection('team_details').getFirstListItem(`team_name="${teamdetail.team_name}"`)
+		if(record1){
+			mesg=''
+			error_mesg='TeamName Already Registered'
+		}
+
+	}catch(ee){		
+		console.log('****',ee);		
+	}
+	finally{
+		loading=false
+	}
+}
 </script>
 <svelte:head>	
 <title>MECIA2.0 Registration</title>
@@ -171,7 +199,8 @@ const onsubmit=async()=>{
 	<form on:submit={onsubmit}>
 	<div >		
 		<span class="input1 input--minoru">
-			<input bind:value={teamdetail.team_name} class="input__field input__field--minoru rounded-xl" type="text" id="teamname" required/>
+
+			<input on:blur={()=>{testEntry();}} bind:value={teamdetail.team_name} class="input__field input__field--minoru rounded-xl" type="text" id="teamname" required/>
 			<label class="input__label input__label--minoru" for="teamname">
 				<span class="input__label-content input__label-content--minoru uppercase font-bold">team name</span>
 			</label>

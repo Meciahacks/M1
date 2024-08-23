@@ -1,7 +1,15 @@
+@font-face {
+  font-family: 'synthan';
+
+  src: url('/Syntha-N.woff'),
+}
 @tailwind base;
 @tailwind components;
-
 @tailwind utilities;
+
+body{
+  font-family: 'synthan';
+}
 .firefly {
   position: fixed;
   left: 50%;

@@ -31,12 +31,6 @@ let config = {
             const record = await pb.collection('team_member').getOne(decodedText, {
                     expand: 'team,Slotwise_via_member',
             });
-
-
-
-
-
-
             if(record.expand.Slotwise_via_member)
                 console.log(record.expand?.Slotwise_via_member[0]?.slot,selectedSlotText);            
             if(record.expand.Slotwise_via_member &&  record.expand.Slotwise_via_member[0].slot==selectedSlotText && record.expand.Slotwise_via_member[0].is_present){
@@ -122,7 +116,8 @@ let config = {
         </div>
     {/if}
     <div id="reader" width="1024"/>        
-    <input class="input border" on:blur={(event)=>fetchRecord(event.target.value)} type="text">    
+    <!--  
+    <input class="input border" on:blur={(event)=>fetchRecord(event.target.value)} type="text">     -->
 
     {#if dt}
         <div class="md:w-10/12 w-full mx-auto bg-slate-700 text-white p-4">

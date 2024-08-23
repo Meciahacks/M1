@@ -4,7 +4,8 @@
 	import {pb} from '../auth'
 	import { onMount } from "svelte";
 	let domainList,deptList
-	let numberOFMember=2+1
+	let numberOFMember=2+1,opendlg1=true
+	let loading=false
 	let mesg,error_mesg
 	let teamdetail={
 		team_name:'',
@@ -73,23 +74,31 @@ const initField=()=>{
 		inputEl.addEventListener( 'blur', onInputBlur );
 	} );
 }
-
 const fetchDomainList=async()=>{
 	try {		
+		loading=true
 		domainList=await pb.collection('domain').getFullList()		
 	} catch (error) {
 		console.log('****',error);
 		mesg=''
 		error_mesg=error
 	}
+	finally{
+		loading=false
+	}
 }
 const fetchDeptList=async()=>{
 	try {		
+		loading=true
 		deptList=await pb.collection('department').getFullList()		
 	} catch (error) {
 		console.log('****',error);
 		mesg=''
 		error_mesg=error
+	}
+
+	finally{
+		loading=false
 	}
 }
 onMount(()=>{
@@ -113,6 +122,7 @@ $: teamMemberList = Array.from({
 			
 const onsubmit=async()=>{	
 	try{
+		loading=true
 		const record = await pb.collection('team_details').create(teamdetail);
 		for await (const dt of teamMemberList) {
 			dt.team=record.id
@@ -135,6 +145,7 @@ const onsubmit=async()=>{
 		console.log('****',error)
 		error_mesg=error
 		mesg=''
+		loading=false
 	}
 }
 </script>
@@ -142,9 +153,9 @@ const onsubmit=async()=>{
 <title>MECIA2.0 Registration</title>
 	<meta name="description" content="mecia registration" />
 </svelte:head>
-<div class="bg-[url('/2.jfif')] w-full bg-cover bg-center">
+<div class="bg-[url('/2.jfif')] w-full bg-cover bg-center bg-fixed">
 <section class="mx-auto w-10/12">	
-	<h2 id='text' class="text-white font-bold uppercase justify-center flex text-xl md:text-4xl">MECIA2.0 Registration</h2>	
+	<h2 id='text' class="text-white font-bold uppercase justify-center flex text-xl md:text-4xl p-2">MECIA2.0 Registration</h2>	
 	{#if error_mesg}
 		<p class="bg-orange-800 text-white text-2xl p-4 font-bold">{error_mesg}</p>
 	{/if}
@@ -154,19 +165,19 @@ const onsubmit=async()=>{
 	<form on:submit={onsubmit}>
 	<div >		
 		<span class="input1 input--minoru">
-			<input bind:value={teamdetail.team_name} class="input__field input__field--minoru" type="text" id="teamname" required/>
+			<input bind:value={teamdetail.team_name} class="input__field input__field--minoru rounded-xl" type="text" id="teamname" required/>
 			<label class="input__label input__label--minoru" for="teamname">
 				<span class="input__label-content input__label-content--minoru uppercase font-bold">team name</span>
 			</label>
 		</span>
 		<span class="input1 input--minoru">
-			<input bind:value={teamdetail.problem_statement} class="input__field input__field--minoru" type="text" id="prob" required/>
+			<input bind:value={teamdetail.problem_statement} class="input__field input__field--minoru rounded-xl" type="text" id="prob" required/>
 			<label class="input__label input__label--minoru" for="prob">
 				<span class="input__label-content input__label-content--minoru uppercase font-bold">Problem Defination</span>
 			</label>
 		</span>
 		<span class="input1 input--minoru">
-			<select bind:value={teamdetail.approach} class="input__field input__field--minoru"  id="approch" required>
+			<select bind:value={teamdetail.approach} class="input__field input__field--minoru rounded-xl"  id="approch" required>
 				<option value="" disabled selected></option>
 				<option value="Software">SOFTWARE</option>
 				<!--<option value="Hardware">HARDWARE</option>
@@ -177,7 +188,7 @@ const onsubmit=async()=>{
 			</label>
 		</span>
 		<span class="input1 input--minoru">			
-			<select bind:value={teamdetail.domain} class="input__field input__field--minoru uppercase text-left"  id="domain" required>
+			<select bind:value={teamdetail.domain} class="input__field input__field--minoru rounded-xl uppercase text-left"  id="domain" required>
 				<option value="" disabled selected></option>
 				{#if domainList}
 					{#each domainList  as domain}					
@@ -192,7 +203,7 @@ const onsubmit=async()=>{
 	</div>
 	<div>
 		<span class="input1 input--minoru">
-			<select bind:value={numberOFMember} class="input__field input__field--minoru"  id="nb" required>
+			<select bind:value={numberOFMember} class="input__field input__field--minoru rounded-xl"  id="nb" required>
 				<option value="" disabled selected></option>
 				<option value="3">3</option>
 				<option value="4">4</option>
@@ -203,11 +214,11 @@ const onsubmit=async()=>{
 		</span>
 	</div>
 	{#each teamMemberList as team_member,indx}
-		<div class="p-1 border">
-		<h4 class="bg-[#eca29b] text-slate-800 uppercase font-bold rounded p-2">{#if team_member.is_leader}Leader Detail{:else}Member-{indx} Detail{/if}</h4>
+		<div class="p-2">
+		<h4 class="bg-[#ff921c] text-slate-800 uppercase font-bold rounded p-4 font-bold">{#if team_member.is_leader}Leader Detail{:else}Member-{indx} Detail{/if}</h4>
 		<div class="grid grid-cols-1 md:grid-cols-3">
 			<span class="input1 input--minoru">
-				<input bind:value={team_member.name} class="input__field input__field--minoru" type="text" id="name" required/>
+				<input bind:value={team_member.name} class="input__field input__field--minoru rounded-xl" type="text" id="name" required/>
 				<label class="input__label input__label--minoru" for="name">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">			
 						{#if team_member.is_leader}Leader Name{:else}Member Name{/if}
@@ -215,13 +226,13 @@ const onsubmit=async()=>{
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<input bind:value={team_member.enrollment} class="input__field input__field--minoru" type="text" id="enroll" required/>
+				<input bind:value={team_member.enrollment} class="input__field input__field--minoru rounded-xl" type="text" id="enroll" required/>
 				<label class="input__label input__label--minoru" for="enroll">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">Enrollment/College ID</span>
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<select bind:value={team_member.tshirt} class="input__field input__field--minoru" type="text" id="tshirt" required>
+				<select bind:value={team_member.tshirt} class="input__field input__field--minoru rounded-xl" type="text" id="tshirt" required>
 				<option value="" disabled selected></option>
 					<option value="XS">XS</option>				
 					<option value="S">S</option>
@@ -239,19 +250,19 @@ const onsubmit=async()=>{
 		</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
 			<span class="input1 input--minoru">
-				<input bind:value={team_member.contact} class="input__field input__field--minoru" type="text" id="contact" required/>
+				<input bind:value={team_member.contact} class="input__field input__field--minoru rounded-xl" type="text" id="contact" required/>
 				<label class="input__label input__label--minoru" for="contact">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">Contact Number(WhatsApp)</span>
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<input bind:value={team_member.email} class="input__field input__field--minoru" type="email" id="email" required/>
+				<input bind:value={team_member.email} class="input__field input__field--minoru rounded-xl" type="email" id="email" required/>
 				<label class="input__label input__label--minoru" for="email">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">Email</span>
 				</label>
 			</span>			
 			<span class="input1 input--minoru">
-				<select bind:value={team_member.dept} class="input__field input__field--minoru uppercase text-left"  id="dept" required>
+				<select bind:value={team_member.dept} class="input__field input__field--minoru rounded-xl uppercase text-left"  id="dept" required>
 					<option value="" disabled selected></option>
 					{#if deptList}
 						{#each deptList  as dept}					
@@ -264,7 +275,7 @@ const onsubmit=async()=>{
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<select bind:value={team_member.year} class="input__field input__field--minoru uppercase text-left"  id="year" required>
+				<select bind:value={team_member.year} class="input__field input__field--minoru rounded-xl uppercase text-left"  id="year" required>
 					<option value="" disabled selected></option>
 					<option value="First Year">First Year</option>				
 					<option value="Second Year">Second Year</option>
@@ -283,6 +294,19 @@ const onsubmit=async()=>{
 	</div>
 	</form>
 </section>
+
+<dialog id="dlg1" class={loading?'modal modal-top modal-open min-h-screen flex items-center justify-center':'min-h-screen modal modal-top'}>
+	<span class="bg-white w-24 loading loading-bars loading-lg"></span>
+</dialog>
+<dialog id="dlg1" class={opendlg1?'modal modal-bottom sm:modal-middle modal-open':'modal modal-bottom sm:modal-middle'}>
+	<div class="modal-box">
+	  <h4 class="text-lg font-bold">Hello!</h4>
+	  <p class="py-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat unde totam quo aperiam maxime incidunt sit reiciendis quisquam debitis molestias, voluptas ut consequatur quibusdam neque aut consectetur corporis impedit amet nobis blanditiis voluptates sint, nulla cupiditate? Dolorum omnis quidem, dolore, cupiditate repellendus quibusdam magni odio suscipit architecto atque, praesentium natus?</p>
+	  <div class="modal-action">
+		<button on:click={()=>{opendlg1=false;}} class="btn" >Close</button>
+	  </div>
+	</div>
+</dialog>
 </div>
 <style>
 </style>

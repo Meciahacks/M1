@@ -107,7 +107,8 @@ onMount(()=>{
 	shuffleText(document.getElementById('text'))
 	initField()
 })		
-$: teamMemberList = Array.from({ 
+$: if(numberOFMember){
+	teamMemberList = Array.from({ 
 		length: numberOFMember}, 
 			(_,i) => ({				
 				name: "",
@@ -118,8 +119,8 @@ $: teamMemberList = Array.from({
 				is_leader: i==0,
 				dept: "",
 				year: ""
-}));
-			
+	}));
+	}
 const onsubmit=async()=>{	
 	try{
 		loading=true

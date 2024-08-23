@@ -142,6 +142,7 @@ const onsubmit=async()=>{
 			// const record1 = await pb.collection('users').create(data)
 
 		}
+		error_mesg=''
 		mesg='Form Submitted Successfully'
 		if(window)
 			window.location.href='http://meciahacks2.odoo.com'

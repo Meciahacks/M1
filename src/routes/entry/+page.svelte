@@ -27,21 +27,19 @@ let config = {
     }
     const fetchRecord=async(decodedText)=>{
         try {            
-            loading=true
-
-
-
-
-
-
-
-
-            
+            loading=true            
             const record = await pb.collection('team_member').getOne(decodedText, {
                     expand: 'team,Slotwise_via_member',
             });
-            
-            if(record.expand.Slotwise_via_member && record.expand.Slotwise_via_member[0].is_present){
+
+
+
+
+
+
+            if(record.expand.Slotwise_via_member)
+                console.log(record.expand?.Slotwise_via_member[0]?.slot,selectedSlotText);            
+            if(record.expand.Slotwise_via_member &&  record.expand.Slotwise_via_member[0].slot==selectedSlotText && record.expand.Slotwise_via_member[0].is_present){
                 mesg=''
                 error_mesg="Already Present"
                 return

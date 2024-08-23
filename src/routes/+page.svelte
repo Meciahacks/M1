@@ -14,7 +14,6 @@
 		problem_statement:''
 	},	
 	teamMemberList=[]
-
 	const shuffleText=(label)=>{
 	if(!label)
 			return
@@ -73,7 +72,6 @@ const initField=()=>{
 		inputEl.addEventListener( 'blur', onInputBlur );
 	} );
 }
-
 const fetchDomainList=async()=>{
 	try {		
 		domainList=await pb.collection('domain').getFullList()		
@@ -106,56 +104,64 @@ $: teamMemberList = Array.from({
 				dept: "",
 				year: ""
 			}));	
-			
-const onsubmit=async()=>{	
-	try{
-		const record = await pb.collection('team_details').create(teamdetail);
+	const onsubmit=async()=>{	
+		try{
+			const record = await pb.collection('team_details').create(teamdetail);
+			for await (const dt of teamMemberList) {
+				dt.team=record.id
 
-		console.log('****',record)
-		for await (const dt of teamMemberList) {
-			dt.team=record.id
-			await pb.collection('team_member').create(dt)
+				await pb.collection('team_member').create(dt)		
+				const data = {
+					"username": teamdetail.team_name,
+					"email": teamMemberList[0].email,
+					"emailVisibility": true,
+					"password": teamMemberList[0].contact,
+					"passwordConfirm": teamMemberList[0].contact,
+					"name": teamdetail.team_name
+				};
+				const record1 = await pb.collection('users').create(data)
+				console.log(record1)
+			}
+		}
+		catch(error){
+			console.log('****',error)
 		}
 	}
-	catch(error){
-		console.log('****',error)
-	}
-}
 </script>
 <svelte:head>	
 <title>MECIA2.0 Registration</title>
 	<meta name="description" content="mecia registration" />
 </svelte:head>
+<div class="bg-[url('/2.jfif')] w-full bg-cover bg-center">
 <section class="mx-auto w-10/12">	
-	<h2 id='text' class="font-bold uppercase justify-center flex text-xl md:text-4xl">MECIA2.0 Registration</h2>	
-	<p>{JSON.stringify(teamdetail)}</p><p>{JSON.stringify(teamMemberList)}</p>
+	<h2 id='text' class="text-white font-bold uppercase justify-center flex text-xl md:text-4xl">MECIA2.0 Registration</h2>	
 	<form on:submit={onsubmit}>
 	<div >		
-		<span class="input1 input--juro">
-			<input bind:value={teamdetail.team_name} class="input__field input__field--juro" type="text" id="teamname" />
-			<label class="input__label input__label--juro" for="teamname">
-				<span class="input__label-content input__label-content--juro uppercase font-bold">team name</span>
+		<span class="input1 input--minoru">
+			<input bind:value={teamdetail.team_name} class="input__field input__field--minoru" type="text" id="teamname" />
+			<label class="input__label input__label--minoru" for="teamname">
+				<span class="input__label-content input__label-content--minoru uppercase font-bold">team name</span>
 			</label>
 		</span>
-		<span class="input1 input--juro">
-			<input bind:value={teamdetail.problem_statement} class="input__field input__field--juro" type="text" id="prob" />
-			<label class="input__label input__label--juro" for="prob">
-				<span class="input__label-content input__label-content--juro uppercase font-bold">Problem Defination</span>
+		<span class="input1 input--minoru">
+			<input bind:value={teamdetail.problem_statement} class="input__field input__field--minoru" type="text" id="prob" />
+			<label class="input__label input__label--minoru" for="prob">
+				<span class="input__label-content input__label-content--minoru uppercase font-bold">Problem Defination</span>
 			</label>
 		</span>
-		<span class="input1 input--juro">
-			<select bind:value={teamdetail.approach} class="input__field input__field--juro"  id="approch">
+		<span class="input1 input--minoru">
+			<select bind:value={teamdetail.approach} class="input__field input__field--minoru"  id="approch">
 				<option value="" disabled selected></option>
-				<option value="Hardware">HARDWARE</option>
 				<option value="Software">SOFTWARE</option>
-				<option value="Hybrid">HYBRID</option>
+				<!--<option value="Hardware">HARDWARE</option>
+				<option value="Hybrid">HYBRID</option>-->
 			</select>
-			<label class="input__label input__label--juro" for="approch">
-				<span class="input__label-content input__label-content--juro uppercase font-bold">select approch</span>
+			<label class="input__label input__label--minoru" for="approch">
+				<span class="input__label-content input__label-content--minoru uppercase font-bold">select approch</span>
 			</label>
 		</span>
-		<span class="input1 input--juro">			
-			<select bind:value={teamdetail.domain} class="input__field input__field--juro uppercase text-left"  id="domain">
+		<span class="input1 input--minoru">			
+			<select bind:value={teamdetail.domain} class="input__field input__field--minoru uppercase text-left"  id="domain">
 				<option value="" disabled selected></option>
 				{#if domainList}
 					{#each domainList  as domain}					
@@ -163,58 +169,73 @@ const onsubmit=async()=>{
 					{/each}
 				{/if}
 			</select>
-			<label class="input__label input__label--juro" for="domain">
-				<span class="input__label-content input__label-content--juro uppercase font-bold">select domain</span>
+			<label class="input__label input__label--minoru" for="domain">
+				<span class="input__label-content input__label-content--minoru uppercase font-bold">select domain</span>
 			</label>
 		</span>
 	</div>
 	<div>
-		<span class="input1 input--juro">
-			<select bind:value={numberOFMember} class="input__field input__field--juro"  id="nb">
+		<span class="input1 input--minoru">
+			<select bind:value={numberOFMember} class="input__field input__field--minoru"  id="nb">
 				<option value="" disabled selected></option>
 				<option value="3">3</option>
 				<option value="4">4</option>
 			</select>
-			<label class="input__label input__label--juro" for="nb">
-				<span class="input__label-content input__label-content--juro uppercase font-bold">Number of Member</span>
+			<label class="input__label input__label--minoru" for="nb">
+				<span class="input__label-content input__label-content--minoru uppercase font-bold">Number of Member</span>
 			</label>
 		</span>
 	</div>
 	{#each teamMemberList as team_member,indx}
 		<div class="p-1 border">
-		<h4 class="bg-slate-700 text-white uppercase font-bold rounded p-2">{#if team_member.is_leader}Leader Detail{:else}Member-{indx} Detail{/if}</h4>
-		<div class="grid grid-cols-1 md:grid-cols-2">
-			<span class="input1 input--juro">
-				<input bind:value={team_member.name} class="input__field input__field--juro" type="text" id="name" />
-				<label class="input__label input__label--juro" for="name">
-					<span class="input__label-content input__label-content--juro uppercase font-bold">			
+		<h4 class="bg-[#eca29b] text-slate-800 uppercase font-bold rounded p-2">{#if team_member.is_leader}Leader Detail{:else}Member-{indx} Detail{/if}</h4>
+		<div class="grid grid-cols-1 md:grid-cols-3">
+			<span class="input1 input--minoru">
+				<input bind:value={team_member.name} class="input__field input__field--minoru" type="text" id="name" />
+				<label class="input__label input__label--minoru" for="name">
+					<span class="input__label-content input__label-content--minoru uppercase font-bold">			
 						{#if team_member.is_leader}Leader Name{:else}Member Name{/if}
 					</span>
 				</label>
 			</span>
-			<span class="input1 input--juro">
-				<input bind:value={team_member.enrollment} class="input__field input__field--juro" type="text" id="enroll" />
-				<label class="input__label input__label--juro" for="enroll">
-					<span class="input__label-content input__label-content--juro uppercase font-bold">Enrollment/College ID</span>
+			<span class="input1 input--minoru">
+				<input bind:value={team_member.enrollment} class="input__field input__field--minoru" type="text" id="enroll" />
+				<label class="input__label input__label--minoru" for="enroll">
+					<span class="input__label-content input__label-content--minoru uppercase font-bold">Enrollment/College ID</span>
+				</label>
+			</span>
+			<span class="input1 input--minoru">
+				<select bind:value={team_member.tshirt} class="input__field input__field--minoru" type="text" id="tshirt" >
+				<option value="" disabled selected></option>
+					<option value="XS">XS</option>				
+					<option value="S">S</option>
+					<option value="M">M</option>
+					<option value="L">L</option>
+					<option value="XL">XL</option>
+					<option value="XXL">XXL</option>
+					<option value="XXXL">XXXL</option>
+					</select>
+				<label class="input__label input__label--minoru" for="tshirt">
+					<span class="input__label-content input__label-content--minoru uppercase font-bold">T-shirt size</span>
 				</label>
 			</span>
 
 		</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-			<span class="input1 input--juro">
-				<input bind:value={team_member.contact} class="input__field input__field--juro" type="text" id="contact" />
-				<label class="input__label input__label--juro" for="contact">
-					<span class="input__label-content input__label-content--juro uppercase font-bold">Contact Number(WhatsApp)</span>
+			<span class="input1 input--minoru">
+				<input bind:value={team_member.contact} class="input__field input__field--minoru" type="text" id="contact" />
+				<label class="input__label input__label--minoru" for="contact">
+					<span class="input__label-content input__label-content--minoru uppercase font-bold">Contact Number(WhatsApp)</span>
 				</label>
 			</span>
-			<span class="input1 input--juro">
-				<input bind:value={team_member.email} class="input__field input__field--juro" type="email" id="email" />
-				<label class="input__label input__label--juro" for="email">
-					<span class="input__label-content input__label-content--juro uppercase font-bold">Email</span>
+			<span class="input1 input--minoru">
+				<input bind:value={team_member.email} class="input__field input__field--minoru" type="email" id="email" />
+				<label class="input__label input__label--minoru" for="email">
+					<span class="input__label-content input__label-content--minoru uppercase font-bold">Email</span>
 				</label>
 			</span>			
-			<span class="input1 input--juro">
-				<select bind:value={team_member.dept} class="input__field input__field--juro uppercase text-left"  id="dept">
+			<span class="input1 input--minoru">
+				<select bind:value={team_member.dept} class="input__field input__field--minoru uppercase text-left"  id="dept">
 					<option value="" disabled selected></option>
 					{#if deptList}
 						{#each deptList  as dept}					
@@ -222,30 +243,31 @@ const onsubmit=async()=>{
 						{/each}
 					{/if}
 				</select>
-				<label class="input__label input__label--juro" for="dept">
-					<span class="input__label-content input__label-content--juro uppercase font-bold">select department</span>
+				<label class="input__label input__label--minoru" for="dept">
+					<span class="input__label-content input__label-content--minoru uppercase font-bold">select department</span>
 				</label>
 			</span>
-			<span class="input1 input--juro">
-				<select bind:value={team_member.year} class="input__field input__field--juro uppercase text-left"  id="year">
+			<span class="input1 input--minoru">
+				<select bind:value={team_member.year} class="input__field input__field--minoru uppercase text-left"  id="year">
 					<option value="" disabled selected></option>
 					<option value="First Year">First Year</option>				
 					<option value="Second Year">Second Year</option>
 					<option value="Third Year">Third Year</option>
 					<option value="Last Year">Last Year</option>
 				</select>
-				<label class="input__label input__label--juro" for="year">
-					<span class="input__label-content input__label-content--juro uppercase font-bold">select year</span>
+				<label class="input__label input__label--minoru" for="year">
+					<span class="input__label-content input__label-content--minoru uppercase font-bold">select year</span>
 				</label>
 			</span>
 		</div>
 		</div>		
 	{/each}
 	<div class="flex justify-end p-2 w-full">
-		<button class="uppercase btn md:w-48 w-full btn-neutral" type="submit">submit</button>
+		<button class="uppercase text-slot-800 btn md:w-48 w-full bg-[#eca29b] hover:bg-[#ffa29f] hover:shadow hover:shadow-white font-bold" type="submit">submit</button>
 	</div>
 	</form>
 </section>
+</div>
 <style>
 </style>
 

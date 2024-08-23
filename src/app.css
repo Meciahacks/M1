@@ -2,7 +2,7 @@
 @tailwind components;
 
 @tailwind utilities;
-/*.firefly {
+.firefly {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -1279,4 +1279,4 @@
     opacity: 1;
     box-shadow: 0 0 2vw 0.4vw yellow;
   }
-} */
+} 

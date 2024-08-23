@@ -5,6 +5,7 @@
 	import { onMount } from "svelte";
 	let domainList,deptList
 	let numberOFMember=2+1
+	let mesg,error_mesg
 	let teamdetail={
 		team_name:'',
 		domain:'',
@@ -72,11 +73,14 @@ const initField=()=>{
 		inputEl.addEventListener( 'blur', onInputBlur );
 	} );
 }
+
 const fetchDomainList=async()=>{
 	try {		
 		domainList=await pb.collection('domain').getFullList()		
 	} catch (error) {
 		console.log('****',error);
+		mesg=''
+		error_mesg=error
 	}
 }
 const fetchDeptList=async()=>{
@@ -84,6 +88,8 @@ const fetchDeptList=async()=>{
 		deptList=await pb.collection('department').getFullList()		
 	} catch (error) {
 		console.log('****',error);
+		mesg=''
+		error_mesg=error
 	}
 }
 onMount(()=>{
@@ -103,30 +109,34 @@ $: teamMemberList = Array.from({
 				is_leader: i==0,
 				dept: "",
 				year: ""
-			}));	
-	const onsubmit=async()=>{	
-		try{
-			const record = await pb.collection('team_details').create(teamdetail);
-			for await (const dt of teamMemberList) {
-				dt.team=record.id
-
-				await pb.collection('team_member').create(dt)		
-				const data = {
-					"username": teamdetail.team_name,
-					"email": teamMemberList[0].email,
-					"emailVisibility": true,
-					"password": teamMemberList[0].contact,
-					"passwordConfirm": teamMemberList[0].contact,
-					"name": teamdetail.team_name
-				};
-				const record1 = await pb.collection('users').create(data)
-				console.log(record1)
-			}
-		}
-		catch(error){
-			console.log('****',error)
+}));
+			
+const onsubmit=async()=>{	
+	try{
+		const record = await pb.collection('team_details').create(teamdetail);
+		for await (const dt of teamMemberList) {
+			dt.team=record.id
+			await pb.collection('team_member').create(dt)		
+  			// const data = {
+			// 	"username": teamdetail.team_name,
+			// 	"email": teamMemberList[0].email,
+			// 	"emailVisibility": true,
+			// 	"password": teamMemberList[0].contact,
+			// 	"passwordConfirm": teamMemberList[0].contact,
+			// 	"name": teamdetail.team_name
+			// };
+			// const record1 = await pb.collection('users').create(data)
+			mesg='Form Submitted Successfully'
+			if(window)
+				window.location.href='http://meciahacks2.odoo.com'
 		}
 	}
+	catch(error){
+		console.log('****',error)
+		error_mesg=error
+		mesg=''
+	}
+}
 </script>
 <svelte:head>	
 <title>MECIA2.0 Registration</title>
@@ -135,22 +145,28 @@ $: teamMemberList = Array.from({
 <div class="bg-[url('/2.jfif')] w-full bg-cover bg-center">
 <section class="mx-auto w-10/12">	
 	<h2 id='text' class="text-white font-bold uppercase justify-center flex text-xl md:text-4xl">MECIA2.0 Registration</h2>	
+	{#if error_mesg}
+		<p class="bg-orange-800 text-white text-2xl p-4 font-bold">{error_mesg}</p>
+	{/if}
+	{#if mesg}
+		<p class="bg-green-500 text-white text-2xl p-4 font-bold">{mesg}</p>
+	{/if}
 	<form on:submit={onsubmit}>
 	<div >		
 		<span class="input1 input--minoru">
-			<input bind:value={teamdetail.team_name} class="input__field input__field--minoru" type="text" id="teamname" />
+			<input bind:value={teamdetail.team_name} class="input__field input__field--minoru" type="text" id="teamname" required/>
 			<label class="input__label input__label--minoru" for="teamname">
 				<span class="input__label-content input__label-content--minoru uppercase font-bold">team name</span>
 			</label>
 		</span>
 		<span class="input1 input--minoru">
-			<input bind:value={teamdetail.problem_statement} class="input__field input__field--minoru" type="text" id="prob" />
+			<input bind:value={teamdetail.problem_statement} class="input__field input__field--minoru" type="text" id="prob" required/>
 			<label class="input__label input__label--minoru" for="prob">
 				<span class="input__label-content input__label-content--minoru uppercase font-bold">Problem Defination</span>
 			</label>
 		</span>
 		<span class="input1 input--minoru">
-			<select bind:value={teamdetail.approach} class="input__field input__field--minoru"  id="approch">
+			<select bind:value={teamdetail.approach} class="input__field input__field--minoru"  id="approch" required>
 				<option value="" disabled selected></option>
 				<option value="Software">SOFTWARE</option>
 				<!--<option value="Hardware">HARDWARE</option>
@@ -161,7 +177,7 @@ $: teamMemberList = Array.from({
 			</label>
 		</span>
 		<span class="input1 input--minoru">			
-			<select bind:value={teamdetail.domain} class="input__field input__field--minoru uppercase text-left"  id="domain">
+			<select bind:value={teamdetail.domain} class="input__field input__field--minoru uppercase text-left"  id="domain" required>
 				<option value="" disabled selected></option>
 				{#if domainList}
 					{#each domainList  as domain}					
@@ -176,7 +192,7 @@ $: teamMemberList = Array.from({
 	</div>
 	<div>
 		<span class="input1 input--minoru">
-			<select bind:value={numberOFMember} class="input__field input__field--minoru"  id="nb">
+			<select bind:value={numberOFMember} class="input__field input__field--minoru"  id="nb" required>
 				<option value="" disabled selected></option>
 				<option value="3">3</option>
 				<option value="4">4</option>
@@ -191,7 +207,7 @@ $: teamMemberList = Array.from({
 		<h4 class="bg-[#eca29b] text-slate-800 uppercase font-bold rounded p-2">{#if team_member.is_leader}Leader Detail{:else}Member-{indx} Detail{/if}</h4>
 		<div class="grid grid-cols-1 md:grid-cols-3">
 			<span class="input1 input--minoru">
-				<input bind:value={team_member.name} class="input__field input__field--minoru" type="text" id="name" />
+				<input bind:value={team_member.name} class="input__field input__field--minoru" type="text" id="name" required/>
 				<label class="input__label input__label--minoru" for="name">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">			
 						{#if team_member.is_leader}Leader Name{:else}Member Name{/if}
@@ -199,13 +215,13 @@ $: teamMemberList = Array.from({
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<input bind:value={team_member.enrollment} class="input__field input__field--minoru" type="text" id="enroll" />
+				<input bind:value={team_member.enrollment} class="input__field input__field--minoru" type="text" id="enroll" required/>
 				<label class="input__label input__label--minoru" for="enroll">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">Enrollment/College ID</span>
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<select bind:value={team_member.tshirt} class="input__field input__field--minoru" type="text" id="tshirt" >
+				<select bind:value={team_member.tshirt} class="input__field input__field--minoru" type="text" id="tshirt" required>
 				<option value="" disabled selected></option>
 					<option value="XS">XS</option>				
 					<option value="S">S</option>
@@ -223,19 +239,19 @@ $: teamMemberList = Array.from({
 		</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
 			<span class="input1 input--minoru">
-				<input bind:value={team_member.contact} class="input__field input__field--minoru" type="text" id="contact" />
+				<input bind:value={team_member.contact} class="input__field input__field--minoru" type="text" id="contact" required/>
 				<label class="input__label input__label--minoru" for="contact">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">Contact Number(WhatsApp)</span>
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<input bind:value={team_member.email} class="input__field input__field--minoru" type="email" id="email" />
+				<input bind:value={team_member.email} class="input__field input__field--minoru" type="email" id="email" required/>
 				<label class="input__label input__label--minoru" for="email">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">Email</span>
 				</label>
 			</span>			
 			<span class="input1 input--minoru">
-				<select bind:value={team_member.dept} class="input__field input__field--minoru uppercase text-left"  id="dept">
+				<select bind:value={team_member.dept} class="input__field input__field--minoru uppercase text-left"  id="dept" required>
 					<option value="" disabled selected></option>
 					{#if deptList}
 						{#each deptList  as dept}					
@@ -248,7 +264,7 @@ $: teamMemberList = Array.from({
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<select bind:value={team_member.year} class="input__field input__field--minoru uppercase text-left"  id="year">
+				<select bind:value={team_member.year} class="input__field input__field--minoru uppercase text-left"  id="year" required>
 					<option value="" disabled selected></option>
 					<option value="First Year">First Year</option>				
 					<option value="Second Year">Second Year</option>

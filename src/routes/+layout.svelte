@@ -22,7 +22,9 @@
 	})
   </script>
 <div class="bg-gray-100 text-slate-800 p-2 min-h-screen">
-	<Header isValid={isValid}></Header>			
+	{#if isValid}
+		<Header isValid={isValid}></Header>			
+	{/if}
 	{#if $page?.route?.id?.toString()=='/'}
 	{#each fireflyList1 as _}  
 		<div class="firefly"></div>

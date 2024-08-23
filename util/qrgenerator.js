@@ -44,7 +44,7 @@ const fetchRecord=async()=>{
     for await (const rr of recordList) {        
         // 
         // generateQrCode(rr.id)
-        generateQrCodeWithBgImage(rr.id,'../src/lib/images/svelte-welcome.png','test1.png')
+        generateQrCodeWithBgImage(rr.id,'/2.jfif','test1.png')
     }
     
 }

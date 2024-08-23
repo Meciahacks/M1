@@ -136,10 +136,11 @@ const onsubmit=async()=>{
 			// 	"name": teamdetail.team_name
 			// };
 			// const record1 = await pb.collection('users').create(data)
-			mesg='Form Submitted Successfully'
-			if(window)
-				window.location.href='http://meciahacks2.odoo.com'
+
 		}
+		mesg='Form Submitted Successfully'
+		if(window)
+			window.location.href='http://meciahacks2.odoo.com'
 	}
 	catch(error){
 		console.log('****',error)
@@ -155,7 +156,7 @@ const onsubmit=async()=>{
 </svelte:head>
 <div class="bg-[url('/2.jfif')] w-full bg-cover bg-center bg-fixed">
 <section class="mx-auto w-10/12">	
-	<h2 id='text' class="text-white font-bold uppercase justify-center flex text-xl md:text-4xl p-2">MECIA2.0 Registration</h2>	
+	<h2 id='text' class="text-white font-bold uppercase font-[synthan] justify-center flex text-xl md:text-4xl p-2">MECIA2.0 Registration</h2>	
 	{#if error_mesg}
 		<p class="bg-orange-800 text-white text-2xl p-4 font-bold">{error_mesg}</p>
 	{/if}
@@ -233,14 +234,12 @@ const onsubmit=async()=>{
 			</span>
 			<span class="input1 input--minoru">
 				<select bind:value={team_member.tshirt} class="input__field input__field--minoru rounded-xl" type="text" id="tshirt" required>
-				<option value="" disabled selected></option>
-					<option value="XS">XS</option>				
+				<option value="" disabled selected></option>	
 					<option value="S">S</option>
 					<option value="M">M</option>
 					<option value="L">L</option>
 					<option value="XL">XL</option>
 					<option value="XXL">XXL</option>
-					<option value="XXXL">XXXL</option>
 					</select>
 				<label class="input__label input__label--minoru" for="tshirt">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">T-shirt size</span>
@@ -290,7 +289,7 @@ const onsubmit=async()=>{
 		</div>		
 	{/each}
 	<div class="flex justify-end p-2 w-full">
-		<button class="uppercase text-slot-800 btn md:w-48 w-full bg-[#eca29b] hover:bg-[#ffa29f] hover:shadow hover:shadow-white font-bold" type="submit">submit</button>
+		<button class="uppercase text-slot-800 btn md:w-48 w-full bg-[#ff921c] hover:bg-[#ff924f] hover:shadow hover:shadow-white font-bold" type="submit">submit</button>
 	</div>
 	</form>
 </section>
@@ -300,8 +299,16 @@ const onsubmit=async()=>{
 </dialog>
 <dialog id="dlg1" class={opendlg1?'modal modal-bottom sm:modal-middle modal-open':'modal modal-bottom sm:modal-middle'}>
 	<div class="modal-box">
-	  <h4 class="text-lg font-bold">Hello!</h4>
-	  <p class="py-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat unde totam quo aperiam maxime incidunt sit reiciendis quisquam debitis molestias, voluptas ut consequatur quibusdam neque aut consectetur corporis impedit amet nobis blanditiis voluptates sint, nulla cupiditate? Dolorum omnis quidem, dolore, cupiditate repellendus quibusdam magni odio suscipit architecto atque, praesentium natus?</p>
+	  <h4 class="bg-[#ff921c] text-white text-lg font-bold w-full p-2">Instructions!</h4>
+	  <p class="py-4 ">
+		The SOFTWARE teams who are listed in above sheet have to fill the following final form. 
+		<br/>
+		First Year Student Should use College ID in case they don't have Enrollment Number.
+		<br/>
+		<span class="text-xl text-orange-700">
+NOTE: Fill the details of team members and team name as per you filled before. And fill your final (updated if any) problem defination(less or equal to 25 words), domain and project approach. No changes will be done after the form is filled once.
+</span>
+	  </p>
 	  <div class="modal-action">
 		<button on:click={()=>{opendlg1=false;}} class="btn" >Close</button>
 	  </div>

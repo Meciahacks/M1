@@ -124,9 +124,12 @@ const onsubmit=async()=>{
 	try{
 		loading=true
 		const record = await pb.collection('team_details').create(teamdetail);
-		for await (const dt of teamMemberList) {
-			dt.team=record.id
-			await pb.collection('team_member').create(dt)		
+		for (let indx = 0; indx < teamMemberList.length; indx++) {
+			const ob = teamMemberList[indx];
+			// 
+			// for await (const dt of teamMemberList) {
+			ob.team=record.id
+			await pb.collection('team_member').create(ob)		
   			// const data = {
 			// 	"username": teamdetail.team_name,
 			// 	"email": teamMemberList[0].email,

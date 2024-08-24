@@ -215,8 +215,8 @@ const testEntry=async()=>{
 			<select bind:value={teamdetail.approach} class="input__field input__field--minoru rounded-xl"  id="approch" required>
 				<option value="" disabled selected></option>
 				<option value="Software">SOFTWARE</option>
-				<!--<option value="Hardware">HARDWARE</option>
-				<option value="Hybrid">HYBRID</option>-->
+				<option value="Hardware">HARDWARE</option>
+				<option value="Hybrid">HYBRID</option>
 			</select>
 			<label class="input__label input__label--minoru" for="approch">
 				<span class="input__label-content input__label-content--minoru uppercase font-bold">select approch</span>
@@ -335,7 +335,7 @@ const testEntry=async()=>{
 	<div class="modal-box">
 	  <h4 class="bg-[#ff921c] text-white text-lg font-bold w-full p-2">Instructions!</h4>
 	  <p class="py-4 ">
-		The SOFTWARE teams who are listed in above sheet have to fill the following final form. 
+		Teams who are listed in above sheet have to fill the following final form. 
 		<br/>
 		First Year Student Should use College ID in case they don't have Enrollment Number.
 		<br/>

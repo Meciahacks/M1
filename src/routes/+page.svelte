@@ -267,7 +267,7 @@ const testEntry=async()=>{
 				</label>
 			</span>
 			<span class="input1 input--minoru">
-				<select bind:value={team_member.tshirt} class="input__field input__field--minoru rounded-xl" type="text" id="tshirt" required>
+				<select bind:value={team_member.tshirt_size} class="input__field input__field--minoru rounded-xl" type="text" id="tshirt_size" required>
 				<option value="" disabled selected></option>	
 					<option class="text-[#142d46]" value="S">S</option>
 					<option class="text-[#142d46]" value="M">M</option>
@@ -275,7 +275,7 @@ const testEntry=async()=>{
 					<option class="text-[#142d46]" value="XL">XL</option>
 					<option class="text-[#142d46]" value="XXL">XXL</option>
 					</select>
-				<label class="input__label input__label--minoru" for="tshirt">
+				<label class="input__label input__label--minoru" for="tshirt_size">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">T-shirt size</span>
 				</label>
 			</span>

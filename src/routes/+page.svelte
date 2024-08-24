@@ -213,10 +213,10 @@ const testEntry=async()=>{
 		</span>
 		<span class="input1 input--minoru">
 			<select bind:value={teamdetail.approach} class="input__field input__field--minoru rounded-xl"  id="approch" required>
-				<option class="text-[#142d46]" value="" disabled selected></option>
-				<option class="text-[#142d46]" value="Software">SOFTWARE</option>
-				<option class="text-[#142d46]" value="Hardware">HARDWARE</option>
-				<option class="text-[#142d46]" value="Hybrid">HYBRID</option>
+				<option value="" disabled selected></option>
+				<option value="Software">SOFTWARE</option>
+				<!--<option value="Hardware">HARDWARE</option>
+				<option value="Hybrid">HYBRID</option>-->
 			</select>
 			<label class="input__label input__label--minoru" for="approch">
 				<span class="input__label-content input__label-content--minoru uppercase font-bold">select approch</span>

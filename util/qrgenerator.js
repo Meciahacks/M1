@@ -4,11 +4,10 @@ import PocketBase from 'pocketbase';
 import { createCanvas, loadImage } from 'canvas'
 import fs from 'fs'
 const pb = new PocketBase('https://meciadb.pockethost.io/');
-async function generateQrCodeWithBgImage(text, bgImagePath, outputFilePath) {
+async function generateQrCodeWithBgImage(text,  outputFilePath) {
     const canvas = createCanvas(400, 400); // Create a canvas
     const ctx = canvas.getContext('2d');
-    const bgImage = await loadImage(bgImagePath);
-    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+    // const bgImage = await loadImage(bgImagePath);
     await QRCode.toCanvas(canvas, text, {
 
         width: 110,  
@@ -18,6 +17,7 @@ async function generateQrCodeWithBgImage(text, bgImagePath, outputFilePath) {
             light: '#0000' 
         }
     });
+    ctx.fillText('Hello There', , 84);
     const out = fs.createWriteStream(outputFilePath);
     const stream = canvas.createPNGStream();
     stream.pipe(out);
@@ -52,3 +52,5 @@ const fetchRecord=async()=>{
 // 
 // generateQrCode('Hello There')
 fetchRecord()
+generateQrCodeWithBgImage('text','test1.png')
+

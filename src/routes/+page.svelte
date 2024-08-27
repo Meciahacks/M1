@@ -322,9 +322,9 @@ const testEntry=async()=>{
 		</div>
 		</div>		
 	{/each}
-	<div class="flex justify-end p-2 w-full">
+	<!-- <div class="flex justify-end p-2 w-full">
 		<button class="uppercase text-slot-800 btn md:w-48 w-full bg-[#01c38d] hover:bg-[#12d4bd] hover:shadow hover:shadow-white font-bold" type="submit">submit</button>
-	</div>
+	</div> -->
 	</form>
 </section>
 
@@ -339,17 +339,14 @@ const testEntry=async()=>{
 	<div class="modal-box">
 	  <h4 class="bg-[#01c38d] text-white text-lg font-bold w-full p-2">Instructions!</h4>
 	  <p class="py-4 ">
-		Teams who are listed in above sheet have to fill the following final form. 
-		<br/>
-		First Year Student Should use College ID in case they don't have Enrollment Number.
 		<br/>
 		<span class="text-xl text-orange-700">
-NOTE: Fill the details of team members and team name as per you filled before. And fill your final (updated if any) problem defination(less or equal to 25 words), domain and project approach. No changes will be done after the form is filled once.
+NOTE: This Form is no longer accepting responses
 </span>
 	  </p>
-	  <div class="modal-action">
+	 <!-- <div class="modal-action">
 		<button on:click={()=>{opendlg1=false;}} class="btn" >Close</button>
-	  </div>
+	  </div> -->
 	</div>
 </dialog>
 </div>

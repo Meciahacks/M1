@@ -4,20 +4,43 @@ import PocketBase from 'pocketbase';
 import { createCanvas, loadImage } from 'canvas'
 import fs from 'fs'
 const pb = new PocketBase('https://meciadb.pockethost.io/');
-async function generateQrCodeWithBgImage(text, bgImagePath, outputFilePath) {
+const drawCText=(canvas, ctx, text) =>{
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
+    ctx.fillStyle = '#000'; // Set the text color (Fluorescent Orange)
+    ctx.font = 'bold 40px Arial'; // Set the font and size
+
+    const textMetrics = ctx.measureText(text);
+    console.log(canvas.width);
+    
+    const textWidth = textMetrics.width;
+    const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
+    const x = (canvasWidth - textWidth) / 2;
+    const y = (canvasHeight + textHeight);
+
+    console.log(x,y);    
+    ctx.fillText(text, x, y+20);
+}
+async function generateQrCodeWithBgImage(text,  outputFilePath) {
     const canvas = createCanvas(400, 400); // Create a canvas
     const ctx = canvas.getContext('2d');
-    const bgImage = await loadImage(bgImagePath);
-    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+    // const bgImage = await loadImage(bgImagePath);
     await QRCode.toCanvas(canvas, text, {
-
-        width: 110,  
+        width: 400,  
         margin: 20,   
         color: {
             dark: '#000f', 
             light: '#0000' 
         }
     });
+
+
+
+
+
+
+    drawCText(canvas,ctx,'hello there')
     const out = fs.createWriteStream(outputFilePath);
     const stream = canvas.createPNGStream();
     stream.pipe(out);
@@ -52,3 +75,5 @@ const fetchRecord=async()=>{
 // 
 // generateQrCode('Hello There')
 fetchRecord()
+generateQrCodeWithBgImage('text','test1.png')
+

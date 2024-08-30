@@ -32,8 +32,6 @@ const shuffleText=(label)=>{
 	}
 	shuffleText1(label)
 }
-
-
 const logout=()=>{
     pb.authStore.clear();
     isValid=false
@@ -43,20 +41,40 @@ onMount(()=>{
 	shuffleText(document.getElementById('text1'))    
 })
 </script>
-
-<div class="navbar bg-[#1784cd] text-white uppercase font-bold py-4 px-2">
+<div class="navbar bg-[#01c38d] text-white uppercase font-bold py-4 px-2">
     <div class="flex-1">
-        <a class="btn text-xl" href='/'><p id='text1'>MECIA2.0 VASAD</p></a>
+        <a class="btn bg-transparent text-xl text-white font-[synthan] border-none" href='/'><p id='text1'>MECIA2.0 VASAD</p></a>
     </div>
+	<!-- <div class="dropdown">
+		  <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+			<svg
+			  xmlns="http://www.w3.org/2000/svg"
+			  class="h-5 w-5"
+			  fill="none"
+			  viewBox="0 0 24 24"
+			  stroke="currentColor">
+			  <path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M4 6h16M4 12h16M4 18h7" />
+			</svg>
+		  </div>
+		  <ul
+			class="menu menu-sm dropdown-content bg-base-100 rounded-box right-2 z-[1] mt-2 w-52 p-2 shadow">
+			<li class="text-slate-700 text-xl"><a>Homepage</a></li>
+			<li class="text-slate-700 text-xl"><a>Portfolio</a></li>
+		  </ul>
+		</div>-->
+     <div class="flex-none gap-2">         
 
-    <div class="flex-none gap-2">        
-        {#if isValid}
-            <a href="/entry" class="btn btn-neutral">QR SCANNER</a>
-            <button on:click={logout} class="btn btn-neutral">    
+		{#if isValid}
+            <a href="/entry" class="btn btn-ghost">QR SCANNER</a>
+            <button on:click={logout} class="btn btn-ghost">    
                 LOGOUT
             </button>
         {:else}
-            <a class="btn btn-neutral" href="/login">LOGIN</a>
+            <a class="btn btn-ghost" href="/login">LOGIN</a>
         {/if}
-    </div>
+    </div> 
 </div>

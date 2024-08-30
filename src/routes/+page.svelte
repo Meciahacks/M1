@@ -187,7 +187,7 @@ const testEntry=async()=>{
 <title>MECIA2.0 Registration</title>
 	<meta name="description" content="mecia registration" />
 </svelte:head>
-<div class="bg-[url('/2.jfif')] w-full bg-cover bg-center bg-fixed">
+<div class="bg-[url('/android.jpg')] md:bg-[url('/ultrar.jpg')] w-full bg-cover bg-center bg-fixed bg-no-repeat">
 <section class="mx-auto w-10/12">	
 	<h2 id='text' class="text-white font-bold uppercase font-[synthan] justify-center flex text-xl md:text-4xl p-2">MECIA2.0 Registration</h2>	
 	{#if error_mesg}
@@ -224,10 +224,10 @@ const testEntry=async()=>{
 		</span>
 		<span class="input1 input--minoru">			
 			<select bind:value={teamdetail.domain} class="input__field input__field--minoru rounded-xl uppercase text-left"  id="domain" required>
-				<option value="" disabled selected></option>
+				<option class="text-[#142d46]" value="" disabled selected></option>
 				{#if domainList}
 					{#each domainList  as domain}					
-						<option value={domain.id} class="uppercase text-left">{domain.name}</option>
+						<option value={domain.id} class="uppercase text-left text-[#142d46]">{domain.name}</option>
 					{/each}
 				{/if}
 			</select>
@@ -239,9 +239,9 @@ const testEntry=async()=>{
 	<div>
 		<span class="input1 input--minoru">
 			<select bind:value={numberOFMember} class="input__field input__field--minoru rounded-xl"  id="nb" required>
-				<option value="" disabled selected></option>
-				<option value="3">3</option>
-				<option value="4">4</option>
+				<option class="text-[#142d46]" value="" disabled selected></option>
+				<option class="text-[#142d46]" value="3">3</option>
+				<option class="text-[#142d46]" value="4">4</option>
 			</select>
 			<label class="input__label input__label--minoru" for="nb">
 				<span class="input__label-content input__label-content--minoru uppercase font-bold">Number of Member</span>
@@ -250,7 +250,7 @@ const testEntry=async()=>{
 	</div>
 	{#each teamMemberList as team_member,indx}
 		<div class="p-2">
-		<h4 class="bg-[#ff921c] text-slate-800 uppercase font-bold rounded p-4 font-bold">{#if team_member.is_leader}Leader Detail{:else}Member-{indx} Detail{/if}</h4>
+		<h4 class="bg-[#01c38d] text-[#142d46] uppercase font-bold rounded p-4 font-bold">{#if team_member.is_leader}Leader Detail{:else}Member-{indx} Detail{/if}</h4>
 		<div class="grid grid-cols-1 md:grid-cols-3">
 			<span class="input1 input--minoru">
 				<input bind:value={team_member.name} class="input__field input__field--minoru rounded-xl" type="text" id="name" required/>
@@ -269,11 +269,11 @@ const testEntry=async()=>{
 			<span class="input1 input--minoru">
 				<select bind:value={team_member.tshirt_size} class="input__field input__field--minoru rounded-xl" type="text" id="tshirt_size" required>
 				<option value="" disabled selected></option>	
-					<option value="S">S</option>
-					<option value="M">M</option>
-					<option value="L">L</option>
-					<option value="XL">XL</option>
-					<option value="XXL">XXL</option>
+					<option class="text-[#142d46]" value="S">S</option>
+					<option class="text-[#142d46]" value="M">M</option>
+					<option class="text-[#142d46]" value="L">L</option>
+					<option class="text-[#142d46]" value="XL">XL</option>
+					<option class="text-[#142d46]" value="XXL">XXL</option>
 					</select>
 				<label class="input__label input__label--minoru" for="tshirt_size">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">T-shirt size</span>
@@ -299,7 +299,7 @@ const testEntry=async()=>{
 					<option value="" disabled selected></option>
 					{#if deptList}
 						{#each deptList  as dept}					
-							<option value={dept.id} class="uppercase text-left">{dept.name}</option>
+							<option  value={dept.id} class="uppercase text-left text-[#142d46]">{dept.name}</option>
 						{/each}
 					{/if}
 				</select>
@@ -310,10 +310,10 @@ const testEntry=async()=>{
 			<span class="input1 input--minoru">
 				<select bind:value={team_member.year} class="input__field input__field--minoru rounded-xl uppercase text-left"  id="year" required>
 					<option value="" disabled selected></option>
-					<option value="First Year">First Year</option>				
-					<option value="Second Year">Second Year</option>
-					<option value="Third Year">Third Year</option>
-					<option value="Last Year">Last Year</option>
+					<option class="text-[#142d46]" value="First Year">First Year</option>				
+					<option class="text-[#142d46]" value="Second Year">Second Year</option>
+					<option class="text-[#142d46]" value="Third Year">Third Year</option>
+					<option class="text-[#142d46]" value="Last Year">Last Year</option>
 				</select>
 				<label class="input__label input__label--minoru" for="year">
 					<span class="input__label-content input__label-content--minoru uppercase font-bold">select year</span>
@@ -322,30 +322,31 @@ const testEntry=async()=>{
 		</div>
 		</div>		
 	{/each}
-	<div class="flex justify-end p-2 w-full">
-		<button class="uppercase text-slot-800 btn md:w-48 w-full bg-[#ff921c] hover:bg-[#ff924f] hover:shadow hover:shadow-white font-bold" type="submit">submit</button>
-	</div>
+	<!-- <div class="flex justify-end p-2 w-full">
+		<button class="uppercase text-slot-800 btn md:w-48 w-full bg-[#01c38d] hover:bg-[#12d4bd] hover:shadow hover:shadow-white font-bold" type="submit">submit</button>
+	</div> -->
 	</form>
 </section>
 
 <dialog id="dlg1" class={loading?'modal modal-top modal-open min-h-screen flex items-center justify-center':'min-h-screen modal modal-top'}>
-	<span class="bg-white w-24 loading loading-bars loading-lg"></span>
+	<!-- <span class="bg-white w-24 loading loading-bars loading-lg"></span> 
+	 -->
+	<div>
+		<img src="/tt.gif" class="w-72" alt="">
+	</div>
 </dialog>
 <dialog id="dlg1" class={opendlg1?'modal modal-bottom sm:modal-middle modal-open':'modal modal-bottom sm:modal-middle'}>
 	<div class="modal-box">
-	  <h4 class="bg-[#ff921c] text-white text-lg font-bold w-full p-2">Instructions!</h4>
+	  <h4 class="bg-[#01c38d] text-white text-lg font-bold w-full p-2">Instructions!</h4>
 	  <p class="py-4 ">
-		Teams who are listed in above sheet have to fill the following final form. 
-		<br/>
-		First Year Student Should use College ID in case they don't have Enrollment Number.
 		<br/>
 		<span class="text-xl text-orange-700">
-NOTE: Fill the details of team members and team name as per you filled before. And fill your final (updated if any) problem defination(less or equal to 25 words), domain and project approach. No changes will be done after the form is filled once.
+NOTE: This Form is no longer accepting responses
 </span>
 	  </p>
-	  <div class="modal-action">
+	 <!-- <div class="modal-action">
 		<button on:click={()=>{opendlg1=false;}} class="btn" >Close</button>
-	  </div>
+	  </div> -->
 	</div>
 </dialog>
 </div>

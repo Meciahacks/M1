@@ -39,6 +39,11 @@ const logout=()=>{
 }
 onMount(()=>{
 	shuffleText(document.getElementById('text1'))    
+	authStore.subscribe((store) => {
+		if(!store || !store.user) 
+			return;
+		isValid = store.token?true:false			
+	});		
 })
 </script>
 <div class="navbar bg-[#01c38d] text-white uppercase font-bold py-4 px-2">
@@ -67,7 +72,6 @@ onMount(()=>{
 		  </ul>
 		</div>-->
      <div class="flex-none gap-2">         
-
 		{#if isValid}
             <a href="/entry" class="btn btn-ghost">QR SCANNER</a>
             <button on:click={logout} class="btn btn-ghost">    

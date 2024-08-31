@@ -322,9 +322,9 @@ const testEntry=async()=>{
 		</div>
 		</div>		
 	{/each}
-	<!-- <div class="flex justify-end p-2 w-full">
+	<div class="flex justify-end p-2 w-full">
 		<button class="uppercase text-slot-800 btn md:w-48 w-full bg-[#01c38d] hover:bg-[#12d4bd] hover:shadow hover:shadow-white font-bold" type="submit">submit</button>
-	</div> -->
+	</div> 
 	</form>
 </section>
 
@@ -344,9 +344,9 @@ const testEntry=async()=>{
 NOTE: This Form is no longer accepting responses
 </span>
 	  </p>
-	 <!-- <div class="modal-action">
+	 <div class="modal-action">
 		<button on:click={()=>{opendlg1=false;}} class="btn" >Close</button>
-	  </div> -->
+	  </div> 
 	</div>
 </dialog>
 </div>

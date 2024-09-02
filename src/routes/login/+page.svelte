@@ -35,14 +35,14 @@
 </svelte:head>
 
 
-<div class="mx-auto w-11/12">----
+<div class="mx-auto w-11/12">
   <h2>Login</h2>
   {#if error}
 	<p style="color: red;">{error}</p>
   {/if}
   <form on:submit|preventDefault={login} class="container">
 	<label class="form-control w-full">
-		<div class="label">
+Fugiat animi volupt		<div class="label">
 		  <span class="label-text">Email</span>
 		</div>
 		<input type="text" placeholder="Email" class="input input-bordered w-full text-slate-800"  bind:value={email} required/>		

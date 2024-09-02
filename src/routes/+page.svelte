@@ -346,7 +346,7 @@ NOTE: This Form is no longer accepting responses
 	  </p>
 	 <div class="modal-action">
 		<button on:click={()=>{opendlg1=false;}} class="btn" >Close</button>
-	  </div> 
+	  </div> -->
 	</div>
 </dialog>
 </div>

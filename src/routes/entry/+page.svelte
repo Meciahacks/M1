@@ -1,6 +1,7 @@
-<script>	
+<script>//
+// @ts-nocheck
+	
 import {Html5QrcodeScanner,Html5QrcodeScanType} from "html5-qrcode"
-
 import { onMount } from "svelte";
 import {pb} from '../../auth'
 let html5QrcodeScanner,decodedText
@@ -9,10 +10,10 @@ let slotList,selectedSlotText=''
 let mesg='',error_mesg=''
 let config = {
         fps: 10,
-        qrbox: {width: 100, height: 100},
 
+        qrbox: {width: 250, height: 250},
         rememberLastUsedCamera: true,
-        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA,Html5QrcodeScanType.SCAN_TYPE_FILE]
     };
     const fetchSlotList=async()=>{
         try{
@@ -40,6 +41,7 @@ let config = {
             }
             console.log(record)
             dt=record
+            
             insertRecord(dt.id)
         } catch (error) {            
             console.log('****',error);
@@ -118,7 +120,6 @@ let config = {
     <div id="reader" width="1024"/>        
     <!--  
     <input class="input border" on:blur={(event)=>fetchRecord(event.target.value)} type="text">     -->
-
     {#if dt}
         <div class="md:w-10/12 w-full mx-auto bg-slate-700 text-white p-4">
             <div class="grid grid-cols-2">
@@ -129,6 +130,17 @@ let config = {
                 <div>Member Name:</div>
                 <div>{dt.name}</div>
             </div>
+        </div>
+
+
+
+
+
+
+
+        <div>
+            <button class="btn btn-primary">Confirm</button>
+            <button>Cancel</button>
         </div>
     {:else if loading}
         <p class="text-center text-xl">Loading....</p>   

@@ -35,7 +35,7 @@
 </svelte:head>
 
 
-<div class="mx-auto w-11/12">
+<div class="mx-auto w-11/12">----
   <h2>Login</h2>
   {#if error}
 	<p style="color: red;">{error}</p>

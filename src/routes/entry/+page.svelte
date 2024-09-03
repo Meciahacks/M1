@@ -18,7 +18,6 @@ let config = {
     const fetchSlotList=async()=>{
         try{
             slotList=await pb.collection('slot').getFullList()
-            console.log(slotList)            
         }
         catch(error){
             console.log('****',error);
@@ -41,8 +40,8 @@ let config = {
             }
             console.log(record)
             dt=record
-            
-            insertRecord(dt.id)
+            // 
+            // insertRecord(dt.id)
         } catch (error) {            
             console.log('****',error);
             dt='User !Found'        
@@ -106,6 +105,7 @@ let config = {
     {#if error_mesg}
         <p class="text-2xl bg-orange-700 text-white font-bold text-center p-2">{error_mesg}</p>
     {/if}
+    <p>{JSON.stringify(slotList)}</p>
     {#if slotList}
         <div class="w-full p-2">
             <label for="slot1" class="font-bold text-xl">Select Slot</label>

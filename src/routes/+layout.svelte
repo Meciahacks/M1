@@ -25,20 +25,8 @@
 	{#if isValid}
 		<Header isValid={isValid}></Header>			
 	{/if}
-	{#if $page?.route?.id?.toString()=='/'}
-	{#each fireflyList1 as _}  
-		<div class="firefly"></div>
-	{/each}
-	{/if}
 	<main class="min-h-screen p-2">
 
-
-
-
-
-
-
-		<slot/>
 		<!-- {#if !isValid}
 			{#if $page?.route?.id?.toString()=='/' || $page.url.toString().includes('login')}
 				<slot />
@@ -48,6 +36,10 @@
 		{:else}
 			<slot/>			
 		{/if} -->
+
+		<div>
+			<slot></slot>
+		</div>
 	</main>
 	<footer>
 		<p class="bg-slate-800 text-white uppercase text-center p-2">visit <a class="underline text-xl" href="https://meciahacks2.odoo.com">MECIA2.0 WEBSITE</a></p>

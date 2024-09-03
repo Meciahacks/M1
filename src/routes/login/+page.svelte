@@ -11,9 +11,8 @@
 
 
 
-	  console.log('----pahchyo');	  
-	  try {		
-
+		event.preventDefault()
+		try {		
 		loading=true
 		await pb.collection('users').authWithPassword(email, password);
 		goto('/entry');
@@ -46,9 +45,9 @@
 	<p style="color: red;">{error}</p>
   {/if}
 
-  <form class="container">
+  <form on:submit={login} class="container">
 	<label class="form-control w-full">
-Fugiat animi volupt		<div class="label">
+		<div class="label">
 		  <span class="label-text">Email</span>
 		</div>
 		<input type="text" placeholder="Email" class="input input-bordered w-full text-slate-800"  bind:value={email} required/>		
@@ -60,14 +59,7 @@ Fugiat animi volupt		<div class="label">
 		<input type="password" placeholder="Password" class="input input-bordered w-full text-slate-800"  bind:value={password} required/>		
 	</label>
 	<div class="w-full my-4">
-
-
-
-
-
-
-
-		<button type="button" on:click={login} class="btn btn-neutral btn-wide w-full">			
+		<button type="submit" class="btn btn-neutral btn-wide w-full">			
 			{#if loading}<span class="loading loading-spinner">
 				Logging In, Please Wait....
 			</span>

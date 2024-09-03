@@ -6,12 +6,17 @@
 	let email = '',password = ''
 	let loading=false
 	let error = '';
-	async function login(event) {
-		event.preventDefault();
+	
+	const login=async (event)=>{
+	  event.preventDefault();
+
+
+
+	  console.log('----pahchyo');	  
 	  try {		
+
 		loading=true
 		await pb.collection('users').authWithPassword(email, password);
-
 		goto('/entry');
 	} catch (err) {
 		console.log(err);
@@ -41,7 +46,7 @@
   {#if error}
 	<p style="color: red;">{error}</p>
   {/if}
-  <form on:submit|preventDefault={login} class="container">
+  <form on:submit={login} class="container">
 	<label class="form-control w-full">
 Fugiat animi volupt		<div class="label">
 		  <span class="label-text">Email</span>

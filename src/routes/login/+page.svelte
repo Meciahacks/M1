@@ -6,7 +6,8 @@
 	let email = '',password = ''
 	let loading=false
 	let error = '';
-	async function login() {
+	async function login(event) {
+		event.preventDefault();
 	  try {		
 		loading=true
 		await pb.collection('users').authWithPassword(email, password);

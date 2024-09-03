@@ -92,6 +92,7 @@ let config = {
         error_mesg=error
     }
 	onMount(async()=>{
+        console.log('****');        
         fetchSlotList()        
         // html5QrcodeScanner = new Html5QrcodeScanner("reader", config,false);
         // html5QrcodeScanner.render(onScanSuccess, onScanFailure);        

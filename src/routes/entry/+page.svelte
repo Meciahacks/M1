@@ -17,7 +17,7 @@ let config = {
     };
     const fetchSlotList=async()=>{
         try{
-            slotList=await pb.collection('slot').getFullList()
+            slotList=await pb.collection('Slot').getFullList()
         }
         catch(error){
             console.log('****',error);

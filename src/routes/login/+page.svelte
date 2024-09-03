@@ -46,7 +46,8 @@
   {#if error}
 	<p style="color: red;">{error}</p>
   {/if}
-  <form on:submit={login} class="container">
+
+  <form class="container">
 	<label class="form-control w-full">
 Fugiat animi volupt		<div class="label">
 		  <span class="label-text">Email</span>
@@ -60,7 +61,14 @@ Fugiat animi volupt		<div class="label">
 		<input type="password" placeholder="Password" class="input input-bordered w-full text-slate-800"  bind:value={password} required/>		
 	</label>
 	<div class="w-full my-4">
-		<button type="submit" class="btn btn-neutral btn-wide w-full">			
+
+
+
+
+
+
+
+		<button type="button" on:click={login} class="btn btn-neutral btn-wide w-full">			
 			{#if loading}<span class="loading loading-spinner">
 				Logging In, Please Wait....
 			</span>

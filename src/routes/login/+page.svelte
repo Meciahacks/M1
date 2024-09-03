@@ -8,7 +8,6 @@
 	let error = '';
 	
 	const login=async (event)=>{
-	  event.preventDefault();
 
 
 

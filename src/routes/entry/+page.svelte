@@ -105,8 +105,8 @@ let config = {
     {#if error_mesg}
         <p class="text-2xl bg-orange-700 text-white font-bold text-center p-2">{error_mesg}</p>
     {/if}
-    <p>{JSON.stringify(slotList)}</p>
     {#if slotList}
+        <p>{JSON.stringify(slotList)}</p>
         <div class="w-full p-2">
             <label for="slot1" class="font-bold text-xl">Select Slot</label>
             <select bind:value={selectedSlotText} on:change={fetchQR} id="slot1" class="select w-full"> 

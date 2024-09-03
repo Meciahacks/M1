@@ -31,7 +31,15 @@
 	{/each}
 	{/if}
 	<main class="min-h-screen p-2">
-		{#if !isValid}
+
+
+
+
+
+
+
+		<slot/>
+		<!-- {#if !isValid}
 			{#if $page?.route?.id?.toString()=='/' || $page.url.toString().includes('login')}
 				<slot />
 			{:else}
@@ -39,7 +47,7 @@
 			{/if}
 		{:else}
 			<slot/>			
-		{/if}
+		{/if} -->
 	</main>
 	<footer>
 		<p class="bg-slate-800 text-white uppercase text-center p-2">visit <a class="underline text-xl" href="https://meciahacks2.odoo.com">MECIA2.0 WEBSITE</a></p>
